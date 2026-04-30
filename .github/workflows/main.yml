@@ -11,7 +11,7 @@ jobs:
       - name: Checkout void source
         uses: actions/checkout@v4
         with:
-          repository: voideditor/void   # یا fork خودت
+          repository: voideditor/void
           ref: main
 
       - name: Setup Node.js
@@ -22,9 +22,14 @@ jobs:
       - name: Install dependencies
         run: npm i
 
-      - name: Upload node_modules
+      - name: Compile
+        run: npm run compile
+
+      - name: Upload compiled output
         uses: actions/upload-artifact@v4
         with:
-          name: void-node-modules
-          path: node_modules/
+          name: void-compiled
+          path: |
+            out/
+            extensions/
           retention-days: 3
