@@ -1,0 +1,33 @@
+name: Build Void Node Modules
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout void source
+        uses: actions/checkout@v4
+        with:
+          repository: voideditor/void
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.2'
+
+      - name: Install all dependencies
+        run: npm i
+
+      - name: Zip node_modules
+        run: Compress-Archive -Path node_modules -DestinationPath node_modules.zip
+
+      - name: Upload node_modules zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: void-node-modules
+          path: node_modules.zip
+          retention-days: 3
